@@ -2,7 +2,22 @@ import React, { Component } from "react";
 import { Card, CardImg, CardTitle, CardBody, CardText } from 'reactstrap';
 
 class SelectedDish extends Component {
+
+    constructor(props){
+        super(props);
+        console.log("constructor SelectedDish comp called");
+
+    }
     
+    componentDidMount(){
+        console.log("component did mount SelectedDish comp called");
+
+    }
+    componentDidUpdate(){
+        console.log("componet did Update SelectedDish comp called");
+
+    }
+
     renderDish(dish) {
         return (
             <Card>
@@ -28,6 +43,10 @@ class SelectedDish extends Component {
     }
 
     render() {
+
+        console.log("render SelectedDish comp called");
+
+
         if (this.props.dish == null) {
             return <div></div>;
         }
