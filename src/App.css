@@ -32,3 +32,9 @@ address{
 .navbar-dark {
     background-color: #512DA8;
 }
+
+.dishName {
+    color: black;
+    background-color: white;
+    text-align: center;
+}
