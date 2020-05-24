@@ -39,12 +39,14 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        console.log(JSON.stringify(values));
-        alert(JSON.stringify(values));
         this.toggleModal();
+
+        //dispatch addComment action to the redux store
+        this.props.addComment(this.props.dishId, values.userRating, values.userName, values.userComment);
     }
 
     render() {
+
         return (
             <React.Fragment>
                 <Button outline color="secondary" onClick={this.toggleModal}>
@@ -61,11 +63,11 @@ class CommentForm extends Component {
                                 <Control.select model=".userRating" name="userRating"
                                     id="userRating"
                                     className="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </Control.select>
                             </Row>
                             <Row className="form-group">
@@ -103,7 +105,7 @@ class CommentForm extends Component {
 }
 
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId}) {
     const retComments = comments.map((comment) => {
         return (
             <div key={comment.id}>
@@ -116,7 +118,7 @@ function RenderComments({ comments }) {
         <div>
             <div>{retComments}</div>
             <div>
-                <CommentForm />
+                <CommentForm addComment={addComment} dishId={dishId}/>
             </div>
         </div>
     );
@@ -149,7 +151,9 @@ const SelectedDish = (props) => {
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <h4>Comments</h4>
-                        <RenderComments comments={props.comments} />
+                        <RenderComments comments={props.comments} 
+                            addComment={props.addComment}
+                            dishId={props.dish.id}/>
                     </div>
                 </div>
             </div>
