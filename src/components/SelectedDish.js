@@ -3,6 +3,7 @@ import { Card, CardImg, CardTitle, CardBody, CardText, Breadcrumb, BreadcrumbIte
 import { Link } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, Label, Row } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from "./LoadingComponent";
 
 
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -126,7 +127,21 @@ function RenderComments({ comments, addComment, dishId}) {
 
 const SelectedDish = (props) => {
 
-    if (props.dish == null) {
+    if(props.isLoading) {
+        return (
+            <div className="container">
+                <Loading />
+            </div>
+        );
+    }
+    else if(props.errMsg) {
+        return (
+            <div className="container">
+                <h4>{props.errMsg}</h4>
+            </div>
+        );
+    }
+    else if (props.dish == null) {
         return <div></div>;
     }
     else {
