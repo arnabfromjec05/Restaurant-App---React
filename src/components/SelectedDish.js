@@ -43,8 +43,8 @@ class CommentForm extends Component {
     handleSubmit(values) {
         this.toggleModal();
 
-        //dispatch addComment action to the redux store
-        this.props.addComment(this.props.dishId, values.userRating, values.userName, values.userComment);
+        //dispatch postComment call to the redux store
+        this.props.postComment(this.props.dishId, values.userRating, values.userName, values.userComment);
     }
 
     render() {
@@ -107,7 +107,7 @@ class CommentForm extends Component {
 }
 
 
-function RenderComments({ comments, addComment, dishId}) {
+function RenderComments({ comments, postComment, dishId}) {
     const retComments = comments.map((comment) => {
         return (
             <div key={comment.id}>
@@ -120,7 +120,7 @@ function RenderComments({ comments, addComment, dishId}) {
         <div>
             <div>{retComments}</div>
             <div>
-                <CommentForm addComment={addComment} dishId={dishId}/>
+                <CommentForm postComment={postComment} dishId={dishId}/>
             </div>
         </div>
     );
@@ -128,14 +128,14 @@ function RenderComments({ comments, addComment, dishId}) {
 
 const SelectedDish = (props) => {
 
-    if(props.isLoading) {
+    if(props.dishLoading) {
         return (
             <div className="container">
                 <Loading />
             </div>
         );
     }
-    else if(props.errMsg) {
+    else if(props.dishErrMsg) {
         return (
             <div className="container">
                 <h4>{props.errMsg}</h4>
@@ -168,8 +168,7 @@ const SelectedDish = (props) => {
                     <div className="col-12 col-md-5 m-1">
                         <h4>Comments</h4>
                         <RenderComments comments={props.comments}
-                            
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId={props.dish.id}/>
                     </div>
                 </div>

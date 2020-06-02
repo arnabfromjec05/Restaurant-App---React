@@ -3,15 +3,50 @@ import {BaseUrl} from '../shared/baseUrl';
 
 //the inside object is called Action Object having a type field and a payload
 
-export const addComment = (dishId, rating, author, comment) => ({
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: {
+    payload: comment
+});
+
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+    const newComment = {
         dishId: dishId,
         rating: rating,
         author: author,
         comment: comment
     }
-});
+    newComment.date = new Date().toISOString();
+
+    fetch(BaseUrl + 'comments', {
+        method: 'POST',
+        body: JSON.stringify(newComment),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        else {
+            var error=new Error('Error '+response.status+" : "+response.statusText);
+            error.response=response;
+            throw error;
+        }
+    }, error => {
+        var error= new Error(error.message);
+        throw error;
+    })
+    .then(comment => dispatch(addComment(comment)))
+    .catch(error => {
+        console.log('POST comment error : '+error.message);
+        alert('POST comment error : '+error.message);
+    })
+
+}
 
 //this is the thunk as it returns a function
 
