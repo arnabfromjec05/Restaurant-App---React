@@ -1,25 +1,31 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import {BaseUrl} from '../shared/baseUrl';
+import {Fade, Stagger} from 'react-animation-components';
 
 function RenderLeader({leader}) {
+
     return (
-        <Media key={leader.id} className="m-5">
-            <Media left>
-                <Media object src={leader.image} alt={leader.name} />
-            </Media>
-            <Media body className="ml-5">
-                <Media heading>
-                    {leader.name}
+        <Fade in>
+            <Media key={leader.id} className="m-5">
+                <Media left>
+                    <Media object src={BaseUrl + leader.image} alt={leader.name} />
                 </Media>
-                <Media title>
-                    {leader.designation}
+                <Media body className="ml-5">
+                    <Media heading>
+                        {leader.name}
+                    </Media>
+                    <Media title>
+                        {leader.designation}
+                    </Media>
+                    <div className="mt-2">
+                        {leader.description}
+                    </div>
                 </Media>
-                <div className="mt-2">
-                    {leader.description}
-                </div>
             </Media>
-        </Media>
+        </Fade>
     );
 }
 
@@ -28,7 +34,7 @@ function About(props) {
 
     const leadersArr= props.leaders.map((leader) => {
         return (
-            <RenderLeader leader={leader} />
+            <RenderLeader leader={leader} isLoading={props.isLoading} errMsg={props.errMsg}/>
         );
     });
 
@@ -88,7 +94,11 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {leadersArr}
+                        <Stagger in>
+                            {
+                                props.isLoading ? <Loading /> : (props.errMsg ? props.errMsg : leadersArr)
+                            }
+                        </Stagger>
                     </Media>
                 </div>
             </div>
